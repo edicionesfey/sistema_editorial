@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 19-05-2024 a las 18:56:30
+-- Tiempo de generación: 09-06-2024 a las 20:14:42
 -- Versión del servidor: 10.11.7-MariaDB-cll-lve
 -- Versión de PHP: 7.2.34
 
@@ -101,20 +101,28 @@ CREATE TABLE `edicion` (
   `id_titulo` int(11) DEFAULT NULL,
   `id_formato` int(1) DEFAULT NULL,
   `numero_edicion` int(2) NOT NULL,
-  `ISBN` char(13) NOT NULL
+  `ISBN` char(13) NOT NULL,
+  `fecha_lanzamiento` date NOT NULL,
+  `portada` varchar(50) NOT NULL,
+  `formato` varchar(10) NOT NULL,
+  `drm` tinyint(1) NOT NULL,
+  `bytes` int(3) NOT NULL,
+  `alto` decimal(4,1) NOT NULL,
+  `ancho` decimal(4,1) NOT NULL,
+  `peso` decimal(4,3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `edicion`
 --
 
-INSERT INTO `edicion` (`id_edicion`, `id_titulo`, `id_formato`, `numero_edicion`, `ISBN`) VALUES
-(1, 1, 1, 1, '9789874787408'),
-(2, 1, 3, 1, '9789874787415'),
-(3, 2, 1, 1, '9789874774521'),
-(4, 2, 3, 1, '9789874774538'),
-(5, 3, 1, 1, '9789874787422'),
-(6, 3, 1, 2, '9789874787446');
+INSERT INTO `edicion` (`id_edicion`, `id_titulo`, `id_formato`, `numero_edicion`, `ISBN`, `fecha_lanzamiento`, `portada`, `formato`, `drm`, `bytes`, `alto`, `ancho`, `peso`) VALUES
+(1, 1, 1, 1, '9789874787408', '2021-06-02', 'image.png', '', 0, 0, 21.0, 14.5, 0.300),
+(2, 1, 1, 1, '9789874787415', '2024-06-06', 'image2.png', '', 0, 0, 21.0, 14.5, 0.400),
+(3, 2, 1, 1, '9789874774521', '2024-03-07', 'image3.png', '', 0, 0, 21.0, 14.5, 0.200),
+(4, 2, 1, 1, '9789874774538', '2024-06-07', 'image4.png', '', 0, 0, 21.0, 14.5, 0.500),
+(5, 3, 1, 1, '9789874787422', '2023-09-01', 'image5.png', '', 0, 0, 21.0, 14.5, 0.450),
+(6, 3, 2, 2, '9789874787446', '2023-11-03', 'image6.png', 'EPUB', 1, 500, 0.0, 0.0, 0.000);
 
 -- --------------------------------------------------------
 
@@ -132,9 +140,8 @@ CREATE TABLE `edicion_formato` (
 --
 
 INSERT INTO `edicion_formato` (`id_formato`, `descripcion`) VALUES
-(1, 'Tapa blanda'),
-(2, 'Tapa dura'),
-(3, 'E-book');
+(1, 'Físico'),
+(2, 'Digital');
 
 -- --------------------------------------------------------
 
@@ -295,21 +302,19 @@ INSERT INTO `tirada` (`id_tirada`, `id_edicion`, `id_imprenta`, `fecha`, `cantid
 CREATE TABLE `titulo` (
   `id_titulo` int(5) NOT NULL,
   `titulo` varchar(50) NOT NULL,
-  `subtitulo` varchar(50) NOT NULL,
-  `portada` varchar(100) NOT NULL,
-  `sinopsis` text NOT NULL
+  `subtitulo` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `titulo`
 --
 
-INSERT INTO `titulo` (`id_titulo`, `titulo`, `subtitulo`, `portada`, `sinopsis`) VALUES
-(1, 'Y el mundo gira', '', 'https://edicionesfey.com/wp-content/uploads/2022/06/9789874787415-768x1112.jpg', 'Si nuestro mundo se detiene, solo queda respirar profundo, mirar hacia el interior y reunir las fuerzas necesarias para retomar el ritmo.\r\n\r\nLean tiene 17 años y, como cualquier adolescente, disfruta de pasar el mayor tiempo posible con sus amigos, especialmente junto a Mateo. Pero cuando la tragedia detenga su mundo, tendrá que buscar la forma de atravesar la tristeza y el dolor, para redescubrir el valor de la amistad, el amor, y aceptarse a sí mismo.'),
-(2, 'Tabú', 'el juego prohibido', 'https://edicionesfey.com/wp-content/uploads/2022/06/9789874774521-scaled-e1694610270740.jpg', 'Leandro ha gozado de la comodidad que ofrece el dinero de su familia. Ahora, en la universidad, su vida gira alrededor de eternas fiestas y noches libertinas. Ninguno de los muchachos que elige puede escapar de sus encantos ni sus estrategias. Sin embargo, la llegada de Gastón, su nuevo profesor, le presentará un desafío inesperado. Los juegos se convertirán en una obsesión y lo llevarán a poner en marcha un plan para conquistarlo y, aunque se resista, sacarlo del armario. Sus intrigas desenterrarán recuerdos olvidados, pondrán en jaque lo que cada uno ha construido a su alrededor y los llevaran al borde de perderlo todo.'),
-(3, 'La llamada de Siete Lagos', '', 'https://edicionesfey.com/wp-content/uploads/2022/06/9789874787422.png', 'Seis extraños son llevados por misteriosas circunstancias hasta Siete Lagos, un pueblo perdido en los helados bosques de Rusia. Cada uno perseguirá su propia ambición, pero el antiguo asentamiento tiene sus propios planes y ellos deberán cooperar si esperan salir de allí con vida. Intérnate en el pozo de la mente y sigue la música del miedo hasta sus últimas consecuencias para descubrir el verdadero significado de las pesadillas.\r\n\r\n'),
-(4, 'Eterna Clara', '', 'https://edicionesfey.com/wp-content/uploads/2022/06/9789874787484-768x1112.png', 'A Clara no le gusta su nombre, aunque la describe a la perfección: optimista, justa e inquebrantable.\r\n\r\nPero los tormentos del pasado y un amor, que solo existe en la complicidad del silencio, hacen que sus palabras se atoren y solo pueda contarlas a Rojizo, su diario y eterno confidente.\r\n\r\nCuando el incansable avance de la vida pone en jaque la rutina del secreto, Simón deberá abrir sus ojos y su corazón, para encontrar respuestas a su incertidumbre y darle vida a la única esperanza de salvar el amor. '),
-(5, 'Príncipes de Arca', '', 'https://edicionesfey.com/wp-content/uploads/2022/06/9789874787477-768x1112.png', 'El príncipe Cam navegará hasta el misterioso reino de Enher, para hallar a su hermana perdida antes de la boda del heredero al trono.\r\nLa princesa Catara, prometida del futuro rey de Tides, intentará vivir una última aventura y huir de un matrimonio arreglado.\r\nLa cristalera Cariat se enfrentará a su fe, para desafiar al destino y proteger a sus hermanas.\r\n\r\nDescubre Arca, un mundo poblado por seres míticos, héroes legendarios y monstruos terribles. Donde los designios divinos se entrecruzan con los destinos de los mortales, bajo la luz de las tres lunas.');
+INSERT INTO `titulo` (`id_titulo`, `titulo`, `subtitulo`) VALUES
+(1, 'Y el mundo gira', ''),
+(2, 'Tabú', 'el juego prohibido'),
+(3, 'La llamada de Siete Lagos', ''),
+(4, 'Eterna Clara', ''),
+(5, 'Príncipes de Arca', '');
 
 -- --------------------------------------------------------
 
@@ -334,7 +339,8 @@ INSERT INTO `usuario` (`id_usuario`, `correo`, `contraseña`, `nombre`, `CUIT`) 
 (2, 'nicolas.manzur@gmail.com', 'Nicolas2024!', 'Nicolas Manzur', '20384950601'),
 (3, 'julieta.carrizo@gmail.com', 'Julieta2024!', 'Julieta Carrizo', '27384950602'),
 (4, 'karen.zarate@gmail.com', 'Karen2024!', 'Karen Zárate', '27384950603'),
-(5, 'fernando.angeleri@gmail.com', 'Fernando2024!', 'Fernando Angeleri', '20384950604');
+(5, 'fernando.angeleri@gmail.com', 'Fernando2024!', 'Fernando Angeleri', '20384950604'),
+(7, 'ramiroreyna90@gmail.com', '123', 'Ramiro', '24350540799');
 
 -- --------------------------------------------------------
 
@@ -551,7 +557,7 @@ ALTER TABLE `titulo`
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `venta`
